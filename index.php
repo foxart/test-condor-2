@@ -1,5 +1,4 @@
 <?php
-
 spl_autoload_register(function ($class) {
     $file = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
     if (file_exists($file)) {
@@ -8,7 +7,7 @@ spl_autoload_register(function ($class) {
 });
 function debug(mixed $data, string $class = 'debug'): void
 {
-    if ($class === 'error'){
+    if ($class === 'error') {
         $style = 'color: red;';
     } elseif ($class === 'info') {
         $style = 'color: blue;';
@@ -16,7 +15,7 @@ function debug(mixed $data, string $class = 'debug'): void
         $style = 'color: gray;';
     }
     if (is_array($data) || is_object($data))
-    echo "<pre style='$style'>";
+        echo "<pre style='$style'>";
     print_r($data);
     echo "</pre>";
 }
@@ -30,3 +29,5 @@ function debugException(Throwable $e): void
         'line' => $e->getLine(),
     ], 'error');
 }
+
+print_r('working');
