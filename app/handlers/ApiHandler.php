@@ -6,10 +6,6 @@ use app\common\Handler;
 
 class ApiHandler implements Handler
 {
-    public function __construct()
-    {
-    }
-
     public function execute($url, $data = []): string
     {
         ob_start();
@@ -42,6 +38,18 @@ class ApiHandler implements Handler
                 "2024-02-01" => 100,
                 "2024-02-02" => 80
             ]
+        ];
+        return json_encode($data);
+    }
+
+    public function getGoogleAnalyticsShapeError(): string
+    {
+        $data = [
+            "192.168.1." => [
+                "2024-02-01" => 20,
+                "2024-02-02" => 15,
+                "2024-02-03" => 5
+            ],
         ];
         return json_encode($data);
     }

@@ -5,7 +5,6 @@ namespace app\router;
 use app\common\MenuConfig;
 use app\handlers\ApiHandler;
 use app\handlers\SolutionHandler;
-use app\repository\GoogleAnalyticsRepository;
 
 class RouterHandler
 {
@@ -35,6 +34,12 @@ class RouterHandler
         $this->router->get(RouterConfig::SOLUTION->value . '/total', function () {
             echo new SolutionHandler()->getTotal();
         });
+        $this->router->get(RouterConfig::SOLUTION->value . '/total/shape-error', function () {
+            echo new SolutionHandler()->getTotalShapeError();
+        });
+        $this->router->get(RouterConfig::SOLUTION->value . '/total/network-error', function () {
+            echo new SolutionHandler()->getTotalNetworkError();
+        });
         $this->router->get(RouterConfig::SOLUTION->value . '/date', function () {
             echo new SolutionHandler()->getByDate();
         });
@@ -47,6 +52,9 @@ class RouterHandler
         });
         $this->router->get(RouterConfig::API->value . '/google-analytics', function () {
             echo new ApiHandler()->getGoogleAnalytics();
+        });
+        $this->router->get(RouterConfig::API->value . '/google-analytics/shape-error', function () {
+            echo new ApiHandler()->getGoogleAnalyticsShapeError();
         });
         $this->router->get(RouterConfig::API->value . '/positive-guys', function () {
             echo new ApiHandler()->getPositiveGuys();

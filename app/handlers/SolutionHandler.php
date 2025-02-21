@@ -6,6 +6,7 @@ use app\common\Handler;
 use app\repository\GoogleAnalyticsRepository;
 use app\repository\HotJarRepository;
 use app\repository\PositiveGuysRepository;
+use Exception;
 
 class SolutionHandler implements Handler
 {
@@ -29,18 +30,22 @@ class SolutionHandler implements Handler
 
     public function getTotal(): string
     {
-        $data = [
-            'Google Analytics' => $this->googleAnalyticsRepository->getData()
-                ->getTotalCount(),
-            'Positive Guys' => $this->positiveGuysRepository->getData()
-                ->getTotalCount(),
-            'Hot Jar' => $this->hotJarRepository->getData()
-                ->getTotalCount(),
-        ];
-        return $this->jsonResponse($data);
+        try {
+            $data = [
+                'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                    ->getTotalCount(),
+                'Positive Guys' => $this->positiveGuysRepository->getData()
+                    ->getTotalCount(),
+                'Hot Jar' => $this->hotJarRepository->getData()
+                    ->getTotalCount(),
+            ];
+            return $this->createJsonResponse($data);
+        } catch (Exception $e) {
+            return $this->createJsonResponse([], error: true, message: $e->getMessage());
+        }
     }
 
-    private function jsonResponse($data, $error = false, $message = ""): string
+    private function createJsonResponse($data, $error = false, $message = ""): string
     {
         header('Content-Type: application/json');
         return json_encode([
@@ -50,29 +55,71 @@ class SolutionHandler implements Handler
         ]);
     }
 
+    public function getTotalShapeError(): string
+    {
+        try {
+            $data = [
+                'Google Analytics' => $this->googleAnalyticsRepository->getDataShapeError()
+                    ->getTotalCount(),
+                'Positive Guys' => $this->positiveGuysRepository->getData()
+                    ->getTotalCount(),
+                'Hot Jar' => $this->hotJarRepository->getData()
+                    ->getTotalCount(),
+            ];
+            return $this->createJsonResponse($data);
+        } catch (Exception $e) {
+            return $this->createJsonResponse([], error: true, message: $e->getMessage());
+        }
+    }
+
+    public function getTotalNetworkError(): string
+    {
+        try {
+            $data = [
+                'Google Analytics' => $this->googleAnalyticsRepository->getDataNetworkError()
+                    ->getTotalCount(),
+                'Positive Guys' => $this->positiveGuysRepository->getData()
+                    ->getTotalCount(),
+                'Hot Jar' => $this->hotJarRepository->getData()
+                    ->getTotalCount(),
+            ];
+            return $this->createJsonResponse($data);
+        } catch (Exception $e) {
+            return $this->createJsonResponse([], error: true, message: $e->getMessage());
+        }
+    }
+
     public function getByDate(): string
     {
-        $data = [
-            'Google Analytics' => $this->googleAnalyticsRepository->getData()
-                ->getAggregatedDataByDate(),
-            'Positive Guys' => $this->positiveGuysRepository->getData()
-                ->getAggregatedDataByDate(),
-            'Hot Jar' => $this->hotJarRepository->getData()
-                ->getAggregatedDataByDate(),
-        ];
-        return $this->jsonResponse($data);
+        try {
+            $data = [
+                'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                    ->getAggregatedDataByDate(),
+                'Positive Guys' => $this->positiveGuysRepository->getData()
+                    ->getAggregatedDataByDate(),
+                'Hot Jar' => $this->hotJarRepository->getData()
+                    ->getAggregatedDataByDate(),
+            ];
+            return $this->createJsonResponse($data);
+        } catch (Exception $e) {
+            return $this->createJsonResponse([], error: true, message: $e->getMessage());
+        }
     }
 
     public function getByIp(): string
     {
-        $data = [
-            'Google Analytics' => $this->googleAnalyticsRepository->getData()
-                ->getAggregatedDataByIp(),
-            'Positive Guys' => $this->positiveGuysRepository->getData()
-                ->getAggregatedDataByIp(),
-            'Hot Jar' => $this->hotJarRepository->getData()
-                ->getAggregatedDataByIp(),
-        ];
-        return $this->jsonResponse($data);
+        try {
+            $data = [
+                'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                    ->getAggregatedDataByIp(),
+                'Positive Guys' => $this->positiveGuysRepository->getData()
+                    ->getAggregatedDataByIp(),
+                'Hot Jar' => $this->hotJarRepository->getData()
+                    ->getAggregatedDataByIp(),
+            ];
+            return $this->createJsonResponse($data);
+        } catch (Exception $e) {
+            return $this->createJsonResponse([], error: true, message: $e->getMessage());
+        }
     }
 }
