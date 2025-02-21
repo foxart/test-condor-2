@@ -21,5 +21,5 @@
 	<br/>
 	<br/>
 	<br/>
-	<a href="<?= $url . '/hot-jar'; ?>">Test HOT JAR</a>
+	<a href="<?= $url . '/hot-jar'; ?>">Test Hot Jar</a>
 </div>
