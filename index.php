@@ -1,6 +1,6 @@
 <?php
 
-use app\common\RouterHandler;
+use app\router\RouterHandler;
 
 spl_autoload_register(function ($class) {
     $file = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
@@ -33,5 +33,5 @@ function debugException(Throwable $e): void
     ], 'error');
 }
 
-$routerHandler = new RouterHandler(__DIR__ . '/index.tpl');
+$routerHandler = new RouterHandler(__DIR__ . '/index.tpl.php');
 $routerHandler->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

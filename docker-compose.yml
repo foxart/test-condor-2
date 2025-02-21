@@ -1,0 +1,54 @@
+version: "3.9"
+
+x-project-volume:
+  &services-volume
+  type: bind
+  source: ./
+  target: /var/www
+
+services:
+  mysql:
+    image: mariadb:10.1.38
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  apache:
+    build: ./apache
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - mysql
+    volumes:
+      - *services-volume
+#    logging:
+#      driver: none
+#    entrypoint:
+#      - /bin/sh
+#      - -c
+#      - sleep 86400
+
+  php:
+    build:
+      args:
+        - PROJECT_DIR=.
+    links:
+      - mysql
+    volumes:
+      - ./index.php:/var/www/index.php:delegated
+      - ./index.tpl.php:/var/www/index.tpl.php:delegated
+      - ./app:/var/www/app:delegated
+      - php-volume:/var/www/vendor
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20k" # max size of each log file
+        max-file: "1" # maximum number of log files
+
+volumes:
+  mysql-volume:
+  php-volume:
