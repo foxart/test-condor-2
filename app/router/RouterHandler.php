@@ -32,15 +32,15 @@ class RouterHandler
         $this->router->get(RouterConfig::SOLUTION->value, function () {
             $this->render(RouterConfig::SOLUTION->getTitle(), new SolutionHandler()->execute(RouterConfig::SOLUTION->value));
         });
-//        $this->router->get(RouterConfig::API->value . '/google-analytics', function () {
-//            echo new ApiHandler()->getGoogleAnalytics();
-//        });
-//        $this->router->get(RouterConfig::API->value . '/positive-guys', function () {
-//            echo new ApiHandler()->getPositiveGuys();
-//        });
-//        $this->router->get(RouterConfig::API->value . '/hot-jar', function () {
-//            echo new ApiHandler()->getHotJar();
-//        });
+        $this->router->get(RouterConfig::SOLUTION->value . '/total', function () {
+            echo new SolutionHandler()->getTotal();
+        });
+        $this->router->get(RouterConfig::SOLUTION->value . '/date', function () {
+            echo new SolutionHandler()->getByDate();
+        });
+        $this->router->get(RouterConfig::SOLUTION->value . '/ip', function () {
+            echo new SolutionHandler()->getByIp();
+        });
         /** API */
         $this->router->get(RouterConfig::API->value, function () {
             $this->render(RouterConfig::API->getTitle(), new ApiHandler()->execute(RouterConfig::API->value));

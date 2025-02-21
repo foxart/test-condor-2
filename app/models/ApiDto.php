@@ -54,4 +54,27 @@ class ApiDto
             return array_sum($dailyStats);
         }, $this->data);
     }
+
+    public function getAggregatedDataByDate(): array
+    {
+        $aggregatedData = [];
+        foreach ($this->data as $dailyStats) {
+            foreach ($dailyStats as $date => $count) {
+                if (!isset($aggregatedData[$date])) {
+                    $aggregatedData[$date] = 0;
+                }
+                $aggregatedData[$date] += $count;
+            }
+        }
+        return $aggregatedData;
+    }
+
+    public function getTotalCount(): int
+    {
+        $totalCount = 0;
+        foreach ($this->data as $dailyStats) {
+            $totalCount += array_sum($dailyStats);
+        }
+        return $totalCount;
+    }
 }

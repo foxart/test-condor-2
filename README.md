@@ -32,3 +32,4 @@ Follow these steps to get your development environment up and running:
 
 - Access the main application at `http://localhost`.
 - Routes and additional functionality are defined in `RouterConfig.php`.
+- Final solution at `http://localhost/solution/total`.

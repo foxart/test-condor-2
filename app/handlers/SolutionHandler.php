@@ -3,21 +3,9 @@
 namespace app\handlers;
 
 use app\common\Handler;
-use app\models\ApiDto;
 use app\repository\GoogleAnalyticsRepository;
 use app\repository\HotJarRepository;
 use app\repository\PositiveGuysRepository;
-
-function jsonResponse($data, $error = false, $message = "")
-{
-    header('Content-Type: application/json');
-    echo json_encode([
-        'error' => $error,
-        'message' => $message,
-        'data' => $data
-    ]);
-    exit;
-}
 
 class SolutionHandler implements Handler
 {
@@ -34,34 +22,57 @@ class SolutionHandler implements Handler
 
     public function execute($url, $data = []): string
     {
-//        ob_start();
-//        include 'SolutionHandler.tpl.php';
-        $googleAnalytics = $this->getGoogleAnalytics();
-        foreach ($googleAnalytics->getData() as $ip => $dailyStats) {
-//            echo "IP Address: $ip" . PHP_EOL;
-//            foreach ($dailyStats as $date => $count) {
-//                echo "   Date: $date, Count: $count" . PHP_EOL;
-//            }
-        }
-        $positiveGuys = $this->getPositiveGuys();
-        $hotJar = $this->getHotJar();
-        var_dump(($googleAnalytics->getStatsByIp('192.168.1.1')));
-        var_dump(($googleAnalytics->getAggregatedDataByIp()));
-        return '$hotJar';
+        ob_start();
+        include 'SolutionHandler.tpl.php';
+        return ob_get_clean();
     }
 
-    public function getGoogleAnalytics(): ?ApiDto
+    public function getTotal(): string
     {
-        return $this->googleAnalyticsRepository->getData();
+        $data = [
+            'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                ->getTotalCount(),
+            'Positive Guys' => $this->positiveGuysRepository->getData()
+                ->getTotalCount(),
+            'Hot Jar' => $this->hotJarRepository->getData()
+                ->getTotalCount(),
+        ];
+        return $this->jsonResponse($data);
     }
 
-    public function getPositiveGuys(): ?ApiDto
+    private function jsonResponse($data, $error = false, $message = ""): string
     {
-        return $this->positiveGuysRepository->getData();
+        header('Content-Type: application/json');
+        return json_encode([
+            'error' => $error,
+            'message' => $message,
+            'data' => $data
+        ]);
     }
 
-    public function getHotJar(): ?ApiDto
+    public function getByDate(): string
     {
-        return $this->hotJarRepository->getData();
+        $data = [
+            'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                ->getAggregatedDataByDate(),
+            'Positive Guys' => $this->positiveGuysRepository->getData()
+                ->getAggregatedDataByDate(),
+            'Hot Jar' => $this->hotJarRepository->getData()
+                ->getAggregatedDataByDate(),
+        ];
+        return $this->jsonResponse($data);
+    }
+
+    public function getByIp(): string
+    {
+        $data = [
+            'Google Analytics' => $this->googleAnalyticsRepository->getData()
+                ->getAggregatedDataByIp(),
+            'Positive Guys' => $this->positiveGuysRepository->getData()
+                ->getAggregatedDataByIp(),
+            'Hot Jar' => $this->hotJarRepository->getData()
+                ->getAggregatedDataByIp(),
+        ];
+        return $this->jsonResponse($data);
     }
 }
