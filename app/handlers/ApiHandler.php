@@ -4,17 +4,6 @@ namespace app\handlers;
 
 use app\common\Handler;
 
-function jsonResponse($data, $error = false, $message = "")
-{
-    header('Content-Type: application/json');
-    echo json_encode([
-        'error' => $error,
-        'message' => $message,
-        'data' => $data
-    ]);
-    exit;
-}
-
 class ApiHandler implements Handler
 {
     public function __construct()
