@@ -8,19 +8,13 @@ spl_autoload_register(function ($class) {
         require_once $file;
     }
 });
-function debug(mixed $data, string $class = 'debug'): void
+function debug(mixed $data, string $class = 'debug'): string
 {
-    if ($class === 'error'){
-        $style = 'color: red;';
-    } elseif ($class === 'info') {
-        $style = 'color: blue;';
-    } else {
-        $style = 'color: gray;';
-    }
-    if (is_array($data) || is_object($data))
-    echo "<pre style='$style'>";
+    ob_start();
+    echo "<pre class='$class'>";
     print_r($data);
     echo "</pre>";
+    return ob_get_clean();
 }
 
 function debugException(Throwable $e): void
